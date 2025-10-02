@@ -1,0 +1,430 @@
+---
+title: "2024_Section_2"
+author: "Zhenchao Hu & Yikun Chi"
+date: '2024-10-10'
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+  html_document:
+    toc: yes
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+# Learning Objective 
+- Intro
+  - What is R and why we need R and R Studio?
+  - What are the four panes in R Studio?
+  - A growth mindset: We will encounter errors
+- Review 
+  - R basic arithmetic and logical operation 
+  - Different object in R
+  - Using vector 
+  - Naming rules
+- Some RStudio Tricks 
+  - ctrl + enter to run current line 
+  - specify output to inline vs. console 
+  - clear output 
+  - working with syntax
+- Data Access
+  - Configure working directory 
+  - Read and write csv file 
+- Working with Dataframe
+  - Summary 
+  - Understand data frame structure (column names, dimension, and type)
+  - Selecting data (row, column, subset)
+
+---
+
+# Previously in our section
+## Basic arithmetic and logical operations 
+Recall we can use R to perform very basic arithmetic and logical operations. 
+```{r}
+# TA Demo: Calculate 2 to the power of 4
+2^4
+# TA Demo: Check whether 10 is greater than 5
+10 > 5
+```
+
+You don't have to know every operator listed below, but the list might come in handy as you progress through your project and lab. 
+
+| Operator  | Arithmetic operation |
+|:---------:|:---------------------|
+|         + | addition             |
+|         - | subtraction          |
+|         * | multiplication       |
+|         / | division             |
+|         ^ | exponentiation       |
+|        %% | modulo               |
+|       %/% | integer division     |
+
+| Operator | Logical operation     |
+|:--------:|:----------------------|
+|        < | less than             |
+|        > | greater than          |
+|       <= | less than or equal to |
+|       >= | more than or equal to |
+|       == | equal                 |
+|       != | not equal             |
+|       !x | not x                 |
+|    x | y | x or y                |
+|    x & y | x & y                 |
+
+
+## Different object and class in R 
+In R, we can create object to store specific values (e.g., character, numeric, logical). We can print the value of the object as well as showing what kind of value the object stores. 
+
+- Note assigning existing object a new value will OVERwrite the existing object 
+- Class of the object can determine what operations can be done on the object
+
+```{r, error=TRUE}
+# TA Demo: Assign object mystery_object value of 2 
+mystery_object <- 2
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object
+mystery_object
+print(mystery_object)
+class(mystery_object)
+# TA Demo: Assign object mystery_object value of "TRUE" 
+mystery_object <- "TRUE"
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object
+mystery_object
+print(mystery_object)
+class(mystery_object)
+# TA Demo: Attempt to calculate the opposite of mystery_object
+!mystery_object
+# TA Demo: Assign object mystery_object value of TRUE
+mystery_object <- TRUE
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object 
+mystery_object
+print(mystery_object)
+class(mystery_object)
+# TA Demo: Calculate the opposite of mystery_object again 
+!mystery_object
+```
+
+
+## Supercharge your calculation with vector
+Vectors are a combination of variables with the same type. You can create a vector using the `c()` function to concatenate. 
+
+- You can use the same arithmetic / logical operation code on vector and it will automatically apply to every elements of the vector. 
+- Operation between two vectors will be done elementwise
+
+```{r}
+# TA Demo: Create a vector birth_year of list of birth year that includes 1991, 1995 , 2005, 2010, 2008, 2000, 1990
+birth_year <- c(1991, 1995 , 2005, 2010, 2008, 2000, 1990)
+
+# TA Demo: Use arithmetic calculation (modulo) and logical operation (whether equals 0) to determine which year is leap year 
+# Leap year: Leap years happen when we add one day to the end of February in order to align our calendar with the Earth's orbit. Once every four years, we tack a 29th day onto the end of February, which is usually 28 days long, making a leap year 366 days instead of 365.
+birth_year %% 4 == 0 # divisible by 4: capable of being divided by another number without a remainder.
+
+# TA Demo: create vec.college_start_age by subtracting vec.years_at_stanford from vec.age
+vec.age <- c(18, 22, 23, 19, 25, 19)
+vec.years_at_stanford <- c(0, 3, 5, 1, 6, 2)
+vec.college_start_age <- vec.age - vec.years_at_stanford
+vec.college_start_age
+```
+
+Some Common Errors
+```{r, error=TRUE}
+# add quotation when it's "character"
+numeric <- 5
+class(numeric)
+
+character <- "5"
+class(character)
+
+numeric_vector <- c(5, 6, 7)
+class(numeric_vector)
+
+character_vector <- c("5", "6", "7")
+class(character_vector)
+
+# use parenthesis when there's a function
+numeric_vector <- (5, 6, 7) 
+
+# what is c()???
+# Ask for help!
+?c
+
+```
+
+## Naming rules and conventions for objects and files
+
+### What to do
+- Short names (e.g. `df.happy` instead of `data_frame_happy_analysis`)
+- Descriptive names (e.g. `plot.age` instead of `p1`)
+- Indicate data type (e.g. `df.smile` instead of `smile`)
+- Note case sensitivity (`X != x`)
+
+### What **NOT** to do
+- Have numbers at the beginning (doesn't work)
+- Have special characters or spaces at the beginning (doesn't work)
+
+```{r, error=TRUE}
+# start with a number?
+var1 <- 1
+1var <- 1
+
+# start with a special character?
+@var <- 1
+$var <- 1
+*var <- 1
+^var <- 1
+.var <- 1
+.var
+
+# more naming rules
+?make.names # check "Details"
+
+```
+
+One thing that I like about R is that you can find help everywhere and there are always help 
+  - help function and R documentation
+  - Open-source community including Stack Overflow
+  - Author contact
+
+---
+
+# Some RStudio Tricks 
+
+Before we dive into today's content, first let's look at some quick RStudio tricks that could come handy. The first one we want to emphasis is that you can use 'ctrl+enter' to run current line. 
+```{r}
+# TA DEMO: Run below line with ctrl+enter 
+2 + 2
+
+```
+
+You can also specify the output to be inline (default) or to the console by clicking the gear icon up top (next to the Knit button)
+```{r}
+# TA DEMO: Switch to console output and run below line with ctrl+enter
+2 + 2
+```
+
+Finally, you can clear all inline output (from the gear icon at the top) and console output (from the brush icon in the console top-right corner) if things gets messy 
+```{r}
+# TA DEMO: Clear inline output and console output 
+
+```
+
+Some other personal tricks
+```{r, error=TRUE}
+# select and add parentheses
+vector <- c5,6,7
+
+# select and add quotation
+vector <- c5,6,7
+# Is this what you intended? Quotation and commas
+
+# write the function first and then specify the argument(s)
+vector <- c
+vector <- c()
+vector <- c(3, 4, 5)
+
+```
+
+
+---
+
+# Data access
+
+## Set your working directory
+- To read and write files, you need to tell R Studio where it should look
+- The working directory is where R will look for files and save them
+- Find out your current working directory using `getwd()`
+- Set your working directory using `setwd()`
+- You can achieve the same thing in the Files interface on your lower right pane
+
+```{r echo = TRUE}
+
+# TA Demo: Find current working directory 
+getwd()
+# TA Demo: Set working directory to your folder with titanic.csv
+setwd("~/Downloads/section2")
+# TA Demo: Check the update
+getwd()
+# TA Demo: Create a new folder called section2, and set it as working directory using the Files tab of the lower right pane
+
+```
+
+- If you work with an `.Rmd` file, `setwd()` only sets your working directory within a single chunk
+- To set it to a specific directory for the entire document and all chunks, use `knitr::opts_knit$set(root.dir = "/my_directory")`
+- You have to **set this in the very first setup code chunk**
+- Note that you might have to install the `knitr` package first
+
+```{r setup_2, eval=FALSE}
+# TA DEMO set wd in R Markdown chunk for entire document
+# Note this chunk has to be the very first setup code chunk 
+# Note eval = FALSE is added to the actual .rmd file to prevent the code from running 
+knitr::opts_knit$set(root.dir = "~/Downloads/section2")
+```
+
+## Loading Data
+- R allows you to load data files from your computer (or online storage)
+- Data files are usually stored as `data.frame` objects
+- Use the function `read_csv()` to read a file in CSV format
+- We will be using "titanic.csv" as the primary dataset. You can find out more information about this dataset from [here](https://www.kaggle.com/competitions/titanic/data)
+
+```{r, error=TRUE}
+install.packages("tidyverse")
+library(tidyverse)
+# TA DEMO: load file "titanic.csv" using read_csv (from tidyverse) into df.titanic
+# Make sure "titanic.csv" is in your working directory first!
+df.titanic <- read_csv("titanic.csv")
+```
+
+## View Data 
+- Use the `View()` function to view all your data (opens a new tab with the data)
+- Use the `print()` function to show all your data
+- Use the `head()` function to the first rows of your data
+```{r echo = TRUE, eval=FALSE}
+# TA DEMO: view entire dataset
+View(df.titanic)
+# TA DEMO: print entire dataset
+print(df.titanic)
+# TA DEMO: head shows first 6 rows
+head(df.titanic, 6)
+```
+
+## Save dataframe
+- R allows you to save data files to your working directory
+- Use the function `write_csv()` to save a file in CSV format
+```{r}
+# TA DEMO let's add something to the dataframe, e.g. mean age
+df.titanic$mean_age <- mean(df.titanic$Age, na.rm = TRUE)
+# TA DEMO now it's a different data frame
+colnames(df.titanic)
+# TA DEMO: so let's save it as "df.titanic_new.csv"
+write_csv(df.titanic, "df.titanic_new.csv")
+```
+
+---
+
+# Working with Dataframe
+We just explored how to use R to read in data and write data to your computer. Now let's explore  more ways to use dataframe.
+
+## Summary Information 
+You can use `summary` function to view the summary information of the dataframe.
+
+```{r}
+# TA DEMO: Load the titanic dataset titanic.csv into df.ship 
+df.ship <- read_csv("titanic.csv")
+# TA DEMO: View summary information. Notice different column type have different summary information 
+summary(df.ship)
+
+```
+
+## Understand dataframe structure 
+
+You can use `colnames()` or `names()` to find out what are the columns in your dataframe 
+```{r}
+# TA DEMO: View all the column names in df.ship 
+colnames(df.ship)
+names(df.ship)
+```
+
+You can use `dim()` to find out how many rows and columns your dataframe have 
+```{r}
+# TA DEMO: View the dimensions of df.ship
+dim(df.ship)
+```
+
+Recall that object has class (e.g., logical/boolean, number, character). Each column of your dataframe is essentially a vector (a collection of object of the same class). As a result, they also have class You can find out the type of columns using `str()`
+```{r}
+# TA DEMO: Find out the column class of your dataframe 
+str(df.ship) #structure of a R object
+```
+
+Notice that sex here has character as class. We know that in this dataset, sex only has two values, "male" and "female". So they can be more than just some arbitrary texts. We can convert it into a special type called "factor", which essentially are groups. 
+
+- For now, the four most relevant classes are numbers, character, boolean, and factor 
+- Here we use `$` selector to select the column, we will get into this more detail later 
+- Summary will give different summary information based on different column type 
+```{r}
+# TA Demo: Show summary information again 
+summary(df.ship$Sex)
+
+# TA DEMO: Select sex column and change its type from character to factor 
+df.ship$Sex <- as.factor(df.ship$Sex)
+
+# TA DEMO: Show summary information again and see how the summary of sex column changes 
+summary(df.ship$Sex)
+```
+
+# Selecting and subset of data
+A dataframe like `df.ship` can contain many information. So what if I only want certain part of information? 
+
+## Selecting specific columns 
+We can use `$` operator to select a specific column of the dataframe. Alternatively, we can use ` %>% ` and `select` operation to select a specific column.  
+```{r}
+# TA DEMO: select only Survived column 
+df.ship$Survived
+df.ship %>%
+  select(Survived)
+```
+
+## Selecting specific rows 
+We can use ` %>% ` and `filter` operation to select specific rows 
+
+```{r}
+# TA DEMO: select only the the female passengers
+df.ship %>%
+  filter(Sex == "female")
+```
+
+## Putting row and column selection together
+` %>% ` operation allows us to chain a series of operations together to accomplish our goals
+
+- Here we use `pull()` operation and `mean(na.rm=TRUE)`. We will revisit these later in more detail. At high level, `pull` pulls the result into a vector, which then allows you to calculate the average with `mean` operation. The `na.rm = TRUE` within `mean` tells the function to ignore all the rows where the record is missing. 
+```{r}
+# TA DEMO: Select only the female passengers 
+df.ship %>%
+  filter(Sex == "female") %>%
+# TA DEMO: select only their age 
+  select(Age) %>% 
+# TA DEMO: pull the result into a vector 
+  pull() %>%
+# TA DEMO: get the mean of the vector 
+  mean(na.rm=TRUE)
+
+```
+
+
+--------------------------------------------------------------------------------  
+
+# Exercise 
+
+## Exercise 1: Setting directory and loading data 
+```{r}
+# TODO: Set directory to a folder called section2
+setwd("~/Downloads/section2")
+library(tidyverse) #so that you can use read_csv()
+# TODO: Load the titanic.csv dataset into df.ship 
+df.ship <- read_csv("titanic.csv")
+```
+
+
+## Exercise 2
+```{r}
+# TODO: Change Sex and Embarked columns in 'titanic.csv' into the factor class and obtain summary information 
+df.ship$Sex <- as.factor(df.ship$Sex)
+summary(df.ship$Sex)
+
+df.ship$Embarked <- as.factor(df.ship$Embarked)
+summary(df.ship$Embarked)
+```
+
+
+## Exercise 3
+```{r}
+# TODO: Calculate the average survival rate of male passengers whose age is above 20 
+df.ship %>%
+  filter(Sex == "male", Age > 20) %>%
+  select("Survived") %>%
+  pull() %>%
+  mean()
+
+```
+
+
+

@@ -1,0 +1,322 @@
+---
+title: "2025_Section_2"
+author: "Zhenchao Hu & Emily Zou"
+date: "2025-10-02"
+output: 
+  html_document:
+      toc: true
+      toc_depth: 4
+editor_options: 
+  chunk_output_type: console
+---
+
+# Section 1 Recap
+## Markdown and code chunks 
+- We're currently using R markdown (Rmd). You cannot run me! I am just text. 
+- In a Rmd file, the default is markdown text. 
+- But if we want to run some R code, we need to tell our computer that we're 
+switch from markdown to R by just typing in... 
+
+```{r}
+```
+
+- The gray chunk tells us that we're in R, and not in Markdown. 
+- In R, hashtags turn lines into comments 
+
+```{r}
+
+print ("I am from Ancient Rome")
+# print ("I am from Ancient Rome")
+```
+
+- in Markdown, hashtags turn lines into headers
+
+## Running things
+### Running one line only
+- Using 'Ctrl + Enter' 
+- Pay attention to where your cursor is! That's what will get run.
+```{r}
+print ("I am from Ancient Rome")
+print ("Who are you?")
+```
+
+- Using the 'Run' button (Look at the row above 'Source' and 'Visual', go all the way to the right)
+
+```{r}
+print ("I am from Ancient Rome")
+print ("Who are you?")
+```
+
+### Where did the outputs go? 
+- Currently showing up in our 'Console' (in the window below the markdown script)
+- But we can also have our outputs show up "in-line" 
+
+#### Two ways (of many) to toggle this 
+- It also is your personal preference -- it doesn't change how the code is run
+1. YAML way
+- Scroll to the very top of this document, where you see title, author, date, etc... (this is called YAML)
+- Find the line that says editor_options, and under that, chunk_output_type
+- Right now, it says console, but if you change it to 'inline' (chunk_output_type: inline)... 
+- and save the document, then our outputs show up right here! (as well as in the console)
+
+```{r}
+print ("I am from Ancient Rome")
+print ("Who are you?")
+```
+
+2. Settings way 
+- Look at the row where 'Run' is, find the gear icon (next to 'Knit')
+- Check whichever 'Chunk output in...' option you prefer
+
+### Running the whole chunk 
+- What if we don't want to run every single line?
+- What if we lose track of what we ran already? 
+```{r}
+question <- "Who are you?"
+
+print (question)
+```
+
+- You can run the whole chunk by hitting the green play button in the top right corner
+```{r}
+question <- "Who are you?"
+
+print (question)
+```
+
+
+## Packages! 
+- Packages are just like apps on your phone, once you download it, you can open 
+and close it whenever you want. (Installation step)
+- Just because we download an app doesn't mean it's always on -- we have to actually 
+open the app to use it. (Loading step)
+```{r}
+# Install a package 
+# Way 1 
+# Go to the 'Packages' tab in the bottom-right window (between Files, Plots and Help, Viewer) 
+# Find your desired package 
+# Hit Install 
+
+# Way 2 
+# Install packages using `install.packages("package_name")`
+install.packages("tidyverse")
+
+
+# Load a package
+# Load packages to use them using `library(package_name)
+library(tidyverse)
+
+```
+
+### Scary error about conflicts! 
+- Don't worry, it's just letting us know that tidyverse is replacing some of the base R functions 
+- You can ignore it for this assignment, it doesn't affect anything.
+
+---
+# Section 2 
+## Loading Data
+- R allows you to load data files from your computer (or online storage)
+- Data files are usually stored as `data.frame` objects
+- Use the function `read_csv()` to read a file in CSV format
+- We will be using "titanic.csv" as the primary dataset. You can find out more information about this dataset from [here](https://www.kaggle.com/competitions/titanic/data)
+
+## Sanity check 
+- In the lower right window, hit 'Files', and follow your directory chain until you're in the folder with this Rmd file and titanic.csv 
+- I can't see 'titanic.csv' unless you've put it in the same folder as me! I don't have access to your whole computer
+- Make sure that this is our working directory! 
+
+```{r}
+# Check where we are right now
+getwd()
+```
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+Just like how we set variables before, we can define dataframes.
+The formula: 
+name_of_df <- read_csv("name_of_our_csv.csv")
+
+
+```{r}
+# Make df.titanic and load titanic.csv into it
+```
+
+In the top right window, under the 'Environment' tab, you should have seen df.titanic show up
+
+## View Data 
+- Use the `View()` function to view all your data (opens a new tab with the data)
+- Use the `print()` function to show all your data
+- Use the `head()` function to see the first rows of your data
+
+For head() 
+- Just running "head(dataframe)" will show you the first 6 rows 
+- But what if we want to see 7 rows? 
+- Formula: head(dataframe, 7)
+
+```{r echo = TRUE, eval=FALSE}
+# View entire dataset
+
+# Print entire dataset
+
+# Look at the first 6 rows
+
+# Look at the first 20 rows
+```
+
+## Save dataframe
+- R allows you to save data files to your working directory
+- Use the function `write_csv()` to save a file in CSV format
+
+What's the difference between df.titanic and titanic.csv? 
+- When we load a dataframe into R, we're making a copy of it, it's not synced up to the csv
+
+```{r}
+# Change the name of the 'PassengerId' column to whatever you want
+# Don't worry about this too much, just put whatever you want in 'newname'
+df.titanic <- df.titanic %>%
+  rename(newname = 'PassengerId')
+
+# Inspect df.titanic and titanic.csv
+
+# Save df.titanic as "df.titanic_new.csv"
+
+```
+
+---
+
+# Working with the dataframe
+## Summary Information 
+- Sometimes we want to explore our data before analyzing it! 
+- You can use the `summary()` function to get an overview of our data.
+- Different column types have different summary statistics...  it doesn't make sense to get the average of names...
+- In general, summary(dataframe)
+
+```{r}
+# Load the titanic dataset 'titanic.csv' into a dataframe called df.ship 
+
+# View summary information
+
+
+```
+
+## Understand dataframe structure 
+
+You can use `colnames()` or `names()` to easily see what the columns in your dataframe actually are
+In general: colnames(dataframe) or names(dataframe)
+```{r}
+# View all the column names in df.ship 
+```
+
+You can use `dim()` to find out how many rows and columns your dataframe has 
+In general: dim(dataframe)
+```{r}
+# View the dimensions of df.ship
+
+```
+
+### Check column types
+We went over object classes last week, which are bit abstract but much easier to understand when looking at the data. 
+- We can check what classes our columns manually. 
+- ... and use our own intuition about what each column tells us. 
+- How does 'whether someone survived or not' differ from their age? 
+- How does someone's name differ from their sex -- is name or sex more similar to passenger ID?
+- Every value in a column must be in necessarily has the same class -- so every column also has a class. 
+
+We can check what that is by using the `str()` function
+In practice, this looks like 
+str(dataframe)
+
+```{r}
+#  Find out the column classes of our dataframe are
+
+```
+
+### Selecting specific columns 
+We can use `$` operator to select a specific column of the dataframe. 
+In general, this looks like:
+dataframe$name_of_column
+
+```{r}
+#Select the "Survived" column 
+
+```
+
+### Change column types
+- What's the class of 'sex'? 
+- When we know that data only falls into some predefined groups, we can convert them into "factors" 
+- In general, this looks like:
+- dataframe$column_name <- as.factor(dataframe$column_name)
+```{r}
+# Show summary information again 
+
+# Select sex column and change its type from character to factor 
+
+# Show summary information again and see how the summary of sex column changes 
+
+```
+
+
+## Selecting specific rows 
+We can use ` %>% ` and `filter` operation to select specific rows 
+In general: 
+
+dataframe %>%
+  filter(column_name == {thing we're filtering for})
+
+```{r}
+# Select only the the female passengers
+
+```
+
+## Putting row and column selection together
+` %>% ` operation allows us to chain a series of operations together to accomplish our goals
+
+- Here we're going to use two functions: `pull()` and `mean(na.rm=TRUE)`. 
+- Don't worry too much about them -- we'll revisit them later.
+- `pull` pulls the result into a vector, which then allows you to calculate the average with `mean` operation. 
+
+column_as_vector <- dataframe %>%
+  pull ({column_we're_interested_in})
+
+- The `na.rm = TRUE` within `mean` tells the function to ignore all the rows where the record is missing. 
+```{r}
+# TA DEMO: Select only the female passengers 
+
+# TA DEMO: select only their age 
+
+# TA DEMO: pull the result into a vector 
+
+# TA DEMO: get the mean of the vector 
+
+
+```
+
+
+--------------------------------------------------------------------------------  
+
+# Exercise 
+
+## Exercise 1: Setting directory and loading data 
+```{r}
+# TODO: Load the titanic.csv dataset into df.ship 
+
+```
+
+
+## Exercise 2
+```{r}
+# TODO: Change Sex and Embarked columns in 'titanic.csv' into the factor class and obtain summary information 
+
+```
+
+
+## Exercise 3
+```{r}
+# TODO: Calculate the average survival rate of male passengers whose age is above 20 
+
+
+```
+

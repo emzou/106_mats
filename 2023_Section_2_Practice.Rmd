@@ -1,0 +1,323 @@
+---
+title: "2023_Section_2_Practice"
+author: "Francis Santiago & Yikun Chi"
+date: "2023-10-13"
+output: 
+  html_document:
+      toc: true
+      toc_depth: 2
+editor_options: 
+  chunk_output_type: console
+---
+# Learning Objective 
+- Review 
+  - R basic arithmetic and logical operation 
+  - Different object in R
+  - Using vector 
+- Some RStudio Tricks 
+  - ctrl + enter to run current line 
+  - specify output to inline vs. console 
+  - clear output 
+- Data Access
+  - Configure working directory 
+  - Read and write csv file 
+- Working with Dataframe
+  - Summary 
+  - Understand data frame structure (column names, dimension, and type)
+  - Selecting data (row, column, subset)
+
+---
+
+# Previously in Comm 106 Sections 
+## Basic arithmetic and logical operations 
+Recall we can use R to perform very basic arithmetic and logical operations. 
+```{r}
+# TA Demo: Calculate 2 to the power of 4
+
+# TA Demo: Check whether 10 is greater than 5
+
+```
+You don't have to know every operator listed below, but the list might come in handy as you progress through your project and lab. 
+
+| Operator  | Arithmetic operation |
+|:---------:|:---------------------|
+|         + | addition             |
+|         - | subtraction          |
+|         * | multiplication       |
+|         / | division             |
+|         ^ | exponentiation       |
+|        %% | modulo               |
+|       %/% | integer division     |
+
+| Operator | Logical operation  |
+|:--------:|:-------------------|
+|        < | less than          |
+|        > | greater than       |
+|   <= | less than or equal to  |
+|   >= | more than or equal to  |
+|       == | equal              |
+|       != | not equal          |
+|       !x | not x              |
+|    x | y | x or y             |
+|    x & y | x & y              |
+
+
+## Different object and class in R 
+In R, we can create object to store specific values (e.g., characters, a number, a boolean value). We can print the the value of the object stores as well as showing what kind of value the object stores. 
+
+- Note assigning existing object a new value will rewrite the existing object 
+- Class of the object can determine what operations can be done on the object 
+
+```{r}
+# TA Demo: Assign object mystery_object value of 2 
+
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object
+
+# TA Demo: Assign object mystery_object value of "TRUE" 
+
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object
+
+# TA Demo: Attempt to calculate the opposite of mystery_object and explain the error 
+
+# TA Demo: Assign object mystery_object value of TRUE
+
+# TA Demo: Print the value mystery_object currently hold and the class of mystery_object 
+
+# TA Demo: Calculate the opposite of mystery_object again 
+
+```
+
+
+## Supercharge your calculation with vector
+Vectors are a combination of variables with the same type. You can create a vector using the `c()` function to concatenate. 
+
+- You can use the same arithmetic / logical operation code on vector and it will automatically apply to every elements of the vector. 
+- Operation between two vectors will be done elementwise
+
+```{r}
+# TA Demo: Create a vector birth_year of list of birth year that includes 1991, 1995 , 2005, 2010, 2008, 2000, 1990
+
+
+# TA Demo: Use arithmetic calculation (modulo) and logical operation (whether equals 0) to determine which year is leap year 
+
+
+
+vec.age <- c(18, 22, 23, 19, 25, 19)
+vec.years_at_stanford <- c(0, 3, 5, 1, 6, 2)
+# TA Demo: create vec.college_start_age by subtracting vec.years_at_stanford from vec.age
+
+```
+
+---
+
+# Some RStudio Tricks 
+
+Before we dive into today's content, first let's look at some quick RStudio tricks that could come handy. The first one we want to emphasis is that you can use 'ctrl+enter' to run current line. 
+```{r}
+# TA DEMO: Run below line with ctrl+enter 
+2 + 2
+
+```
+
+You can also specify the output to be inline (default) or to the console by clicking the gear icon up top (next to the Knit button)
+```{r}
+# TA DEMO: Switch to console output and run below line with ctrl+enter
+2 + 2
+```
+
+Finally, you can clear all inline output (from the gear icon at the top) and console output (from the brush icon in the console top-right corner) if things gets messy 
+```{r}
+# TA DEMO: Clear inline output and console output 
+
+```
+
+---
+
+# Data access
+
+## Set your working directory
+- To read and write files, you need to tell R where it should look
+- The working directory is where R will look for files and save them
+- Find out your current working directory using `getwd()`
+- Set your working directory using `setwd()`
+- You can achieve the same thing in the Files interface on your right
+
+```{r echo = TRUE}
+
+# TA Demo: Find current working directory 
+
+# TA Demo: Set working directory to a folder a folder called section1
+
+# TA Demo: Check the update
+
+# TA Demo: Switch to previous level of directory, create a new folder called section2, and set it as working directory using the UI interface 
+
+```
+
+- If you work with an `.Rmd` file, `setwd()` only sets your working directory within a single chunk
+- To set it to a specific directory for the entire document and all chunks, use `knitr::opts_knit$set(root.dir = "/my_directory")`
+- You have to **set this in the very first setup code chunk**
+- Note that you might have to install the `knitr` package first
+
+```{r setup_2, eval=FALSE}
+# TA DEMO set wd in R Markdown chunk for entire document
+# Note this chunk has to be the very first setup code chunk 
+# Note eval = FALSE is added to the actual .rmd file to prevent the code from running 
+knitr::opts_knit$set(root.dir = "/Users/Serena/Desktop/section1")
+```
+
+
+## Loading Data
+- R allows you to load datafiles from your computer (or online storages)
+- Datafiles are usually stored as `data.frame` objects
+- Use the function `read_csv()` to read a file in CSV format
+
+```{r}
+library(tidyverse)
+# TA DEMO: load file "women.csv" using read_csv (from tidyverse) into df.women
+# Make sure "women.csv" is in your working directory first!
+```
+
+## View Data 
+- Use the `View()` function to view all your data (opens a new tab with the data)
+- Use the `print()` function to show all your data
+- Use the `head()` function to the first rows of your data
+```{r echo = TRUE, eval=FALSE}
+# TA DEMO: view entire dataset
+# TA DEMO: print entire dataset
+# TA DEMO: head shows first 6 rows
+```
+
+## Save dataframe
+
+```{r}
+# TA DEMO let's add something to the dataframe, e.g. mean height
+#df.women$mean_height <- mean(df.women$height, na.rm = TRUE)
+
+# TA DEMO now it's a different data frame
+#colnames(df.women)
+
+# TA DEMO: so let's save it as "df.women_new.csv"
+```
+
+---
+
+
+# Working with Dataframe
+We just explored how to use R to read in data and write data to your computer. Now let's explore  more ways to use dataframes. 
+
+## Summary Information 
+You can use `summary` function to view the summary information of the dataframe. Here we use a more complicated dataset about passenger of Titanic. You can find out more information about this dataset from [here](https://www.kaggle.com/competitions/titanic/data)
+
+```{r}
+# TA DEMO: Load the titanic dataset titanic.csv into df.ship 
+# TA DEMO: View summary information. Notice different column type have different summary information 
+df.ship <- read_csv('titanic.csv')
+summary(df.ship)
+
+```
+
+## Understand dataframe structure 
+
+You can use `colnames()` or `names()` to find out what are the columns in your dataframe 
+```{r}
+# TA DEMO: View all the column names in df.ship 
+
+```
+
+You can use `dim()` to find out how many rows and columns your dataframe have 
+```{r}
+# TA DEMO: View the dimensions of df.ship
+
+```
+
+Recall that object has class (e.g., boolean, number, character). Each column of your dataframe is essentially a vector(a collection of object of the same class). As a result, they also have class You can find out the type of columns using `str()`
+```{r}
+# TA DEMO: Find out the column class of your dataframe 
+
+```
+
+Notice that sex here has character as class. We know that in this dataset, sex only has two values, "male" and "female". So they can be more than just some arbitrary texts. We can convert it into a special type called "factor", which essentially are groups. 
+
+- For now, the four most relevant classes are numbers, character, boolean, and factor 
+- Here we use `$` selector to select the column, we will get into this more detail later 
+- Summary will give different summary information based on different column type 
+```{r}
+# TA Demo: Show summary information again 
+
+
+# TA DEMO: Select sex column and change its type from character to factor 
+
+
+# TA DEMO: Show summary information again and see how the summary of sex column changes 
+
+```
+
+
+# Selecting and subset of data
+A dataframe like `df.ship` can contain many information. So what if I only want certain part of information? 
+
+## Selecting specific columns 
+We can use `$` operator to select a specific column of the dataframe. Alternatively, we can use ` %>% ` and `select` operation to select a specific column.  
+```{r}
+# TA DEMO: select only Survived column 
+
+```
+
+## Selecting specific rows 
+We can use ` %>% ` and `filter` operation to select specific rows 
+
+```{r}
+# TA DEMO: select only the the female passengers
+
+```
+
+## Putting row and column selection together
+` %>% ` operation allows us to chain a series of operations together to accomplish our goals
+
+- Here we use `pull()` operation and `mean(na.rm=TRUE)`. We will revisit these later in more detail. At high level, `pull` pulls the result into a vector, which then allows you to calcualte the average with `mean` operation. The `na.rm = TRUE` within `mean` tells the function to ignore all the rows where the record is missing. 
+```{r}
+
+# TA DEMO: Select only the female passengers 
+# TA DEMO: select only their age 
+# TA DEMO: pull the result into a vector 
+# TA DEMO: get the mean of the vector 
+
+
+```
+
+  
+  
+  
+  
+
+# Exercise 
+
+## Exercise 1: Setting directory and loading data 
+```{r}
+# TODO: Set directory to a folder called section2
+
+library(tidyverse) #so that you can use read_csv()
+# TODO: Load the titanic.csv dataset into df.ship 
+
+```
+
+
+## Exercise 2
+```{r}
+# TODO: Change Sex and Embarked columns in 'titanic.csv' into the factor class and obtain summary information 
+
+
+```
+
+
+
+## Exercise 3
+```{r}
+# TODO: Calculate the average survival rate of male passengers whose age is above 20 
+
+
+```
+
+
+
