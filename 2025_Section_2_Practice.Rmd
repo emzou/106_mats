@@ -130,11 +130,40 @@ library(tidyverse)
 getwd()
 ```
 
+## Set your working directory
+- To read and write files, you need to tell R Studio where it should look
+- The working directory is where R will look for files and save them
+- Find out your current working directory using `getwd()`
+- Set your working directory using `setwd()`
+- You can achieve the same thing in the Files interface on your lower right pane
+
+```{r}
+# Set your working directory
+setwd("~/Desktop/comm_106/section_2")
+# Check the update
+getwd()
+```
+
+- If you work with an `.Rmd` file, `setwd()` only sets your working directory within a single chunk
+- To set it to a specific directory for the entire document and all chunks, use `knitr::opts_knit$set(root.dir = "/my_directory")`
+- You have to **set this in the very first setup code chunk**
+- Note that you might have to install the `knitr` package first
+
+```{r setup_2, eval=TRUE}
+# TA DEMO set wd in R Markdown chunk for entire document
+# Note this chunk has to be the very first setup code chunk 
+# Note eval = FALSE is added to the actual .rmd file to prevent the code from running 
+library(knitr)
+knitr::opts_knit$set(root.dir = "~/Desktop/comm_106/section_2")
+```
+
 ```{r}
 install.packages("tidyverse")
 library(tidyverse)
 ```
 
+
+## Loading the Data into R
 Just like how we set variables before, we can define dataframes.
 The formula: 
 name_of_df <- read_csv("name_of_our_csv.csv")
